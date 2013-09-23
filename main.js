@@ -16,25 +16,48 @@ tm.main(function() {
     app.resize(SCREEN_WIDTH, SCREEN_HEIGHT); // リサイズ
     app.fitWindow();    // 自動フィット
     // app.enableStats();
-    tm.asset.AssetManager.load(ASSETS);
 
-    var scene = app.currentScene;
+    var loading = tm.app.LoadingScene({
+        width: SCREEN_WIDTH,
+        height: SCREEN_HEIGHT,
+        assets: ASSETS,
+        nextScene: MainScene,
+    });
+    app.replaceScene(loading);
 
-    var teku = Teku();
-    var p = app.pointing;
-
-    scene.update = function() {
-    };
-
-    scene.addChild(teku);
     app.run();//実行
 });
 
-tm.define("Teku", {
-    superClass : "tm.app.Shape",
+var MainScene = tm.createClass({
+    superClass : tm.app.Scene,
+    teku: null,
+    num: null,
     init : function () {
-        this.superInit(300, 300);
+        this.superInit();
+        this.teku = new Teku();
+        this.addChild(this.teku);
+        this.num = 0;
+
+        self = this;
+        this.teku.onpointingstart = function () {
+            self.num++;
+            console.log(self.num);
+        };
+    }
+});
+
+var Teku = tm.createClass({
+    superClass : tm.app.Sprite,
+    init : function () {
+        this.superInit("tekunyan", 300, 300);
+        this.setInteractive(true);
         this.setPosition(SCREEN_CENTER_X, SCREEN_CENTER_Y);
-        this.canvas.clearColor("hsl({0}, {1}%, 70%)".format(0, 0));
+    },
+    onpointingover : function () {
+        this.setSize(this.width * 1.1, this.height * 1.1);
+    },
+    onpointingout : function () {
+        this.setSize(this.width / 1.1, this.height / 1.1);
     },
 });
+
