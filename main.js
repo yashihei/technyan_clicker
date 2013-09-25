@@ -10,6 +10,7 @@ var ASSETS = {
     "background" : "background.png",
     "tekunyan" : "tekunyan.png",
     "tekunyan_little" : "tekunyan_little.png",
+    "shine" : "shine.png",
 };
 
 tm.main(function() {
@@ -17,6 +18,8 @@ tm.main(function() {
     app.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
     app.fitWindow();
     // app.enableStats();
+    app.fps = 30;
+    app.enableStats();
 
     var loading = tm.app.LoadingScene({
         width: SCREEN_WIDTH,
@@ -38,8 +41,17 @@ tm.define("MainScene", {
         background.setPosition(SCREEN_CENTER_X, SCREEN_CENTER_Y);
         this.addChild(background);
 
+        var tekuMini = [];
         var tekuMiniGroup = tm.app.CanvasElement();
         this.addChild(tekuMiniGroup);
+
+        var shine = tm.app.Sprite("shine", 500, 500);
+        shine.setPosition(SCREEN_CENTER_X, SCREEN_CENTER_Y);
+        shine.alpha = 0.3;
+        shine.update = function () {
+            shine.rotation += 2;
+        };
+        this.addChild(shine);
 
         var teku = Teku();
         this.addChild(teku);
@@ -58,9 +70,10 @@ tm.define("MainScene", {
                     x: SCREEN_CENTER_X,
                     y: teku.y - 200,
                     fillStyle: "#eee",
-                    fontSize: 50,
+                    fontSize: 45,
                     align: "center",
                     baseline: "middle",
+                    fontFamily: "'Kavoon', 'Consolas'",
                 },
             ]
         });
@@ -70,7 +83,7 @@ tm.define("MainScene", {
             num++;
             console.log(num);
             self.scoreLabel.text = num;
-            self.scoreLabel.text += "technyans";
+            self.scoreLabel.text += " technyans";
             document.title = num + " technyans - TechnyanClicker";
 
             teku.setSize(this.width / 1.1, this.height / 1.1);//ここに書きたくはない
