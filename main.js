@@ -17,9 +17,8 @@ tm.main(function() {
     var app = tm.app.CanvasApp("#world");
     app.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
     app.fitWindow();
-    // app.enableStats();
     app.fps = 30;
-    app.enableStats();
+    //app.enableStats();
 
     var loading = tm.app.LoadingScene({
         width: SCREEN_WIDTH,
